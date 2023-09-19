@@ -58,10 +58,11 @@ public class Package implements BinaryData {
             headerLength = Byte.toUnsignedInt(in.readNBytes(1)[0]);
             headerEncoding = Byte.toUnsignedInt(in.readNBytes(1)[0]);
 
+
             frameDataLength = ByteBuffer.wrap(in.readNBytes(2))
-                    .order(ByteOrder.LITTLE_ENDIAN).getInt();
+                    .order(ByteOrder.LITTLE_ENDIAN).getShort();
             packageIdentifier = ByteBuffer.wrap(in.readNBytes(2))
-                    .order(ByteOrder.LITTLE_ENDIAN).getInt();
+                    .order(ByteOrder.LITTLE_ENDIAN).getShort();
 
             packetType = Byte.toUnsignedInt(in.readNBytes(1)[0]);
 
@@ -80,9 +81,9 @@ public class Package implements BinaryData {
             switch (packetType) {
                 case 1 -> servicesFrameData = new ServiceDataSet();
                 case 2 -> servicesFrameData = new PtResponse();
-                default -> servicesFrameData = null;
+                default -> throw new RuntimeException("Unknown package type: " + packetType);
             }
-//            servicesFrameData.decode(dataFrameBytes);
+            servicesFrameData.decode(dataFrameBytes);
 
             var crcBytes = in.readNBytes(2);
             servicesFrameDataCheckSum = ByteBuffer.wrap(crcBytes)
