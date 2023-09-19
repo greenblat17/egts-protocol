@@ -5,10 +5,10 @@ import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.PrintWriter;
 import java.net.Socket;
-import java.util.Arrays;
+import java.util.Scanner;
 
 public class EgtsClientApplication {
-    private final static String HOSTNAME = "localhost";
+    private final static String HOSTNAME = "server";
     private final static int PORT = 8080;
 
     public static void main(String[] args) throws IOException {
@@ -19,13 +19,18 @@ public class EgtsClientApplication {
         ) {
             System.out.println("Connected to " + HOSTNAME + " on port " + PORT);
 
-            String data = "8900030B0003005900004A1538003359";
-            System.out.println("Sending to server:\n" + data);
-            out.println(data);
+            Scanner scanner = new Scanner(System.in);
+            while (true) {
+                System.out.println("Input line as bytes array (for example: 0100030B0003005900004A1538003359)");
+                var userInput = scanner.nextLine();
 
-            String line;
-            while ((line = in.readLine()) != null) {
-                System.out.println("Client received: " + line);
+                System.out.println("Sending to server:\n" + userInput);
+                out.println(userInput);
+
+                String line;
+                while ((line = in.readLine()) != null) {
+                    System.out.println("Client received: " + line);
+                }
             }
         }
     }
