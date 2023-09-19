@@ -1,0 +1,18 @@
+services:
+  server:
+    container_name: egts-server
+    image: greenblat17/egts-server
+    networks:
+      - egts
+    restart: unless-stopped
+  client:
+    container_name: egts-client
+    image: greenblat17/egts-client
+    networks:
+      - egts
+    depends_on:
+      - server
+    restart: unless-stopped
+networks:
+  egts:
+    driver: bridge
