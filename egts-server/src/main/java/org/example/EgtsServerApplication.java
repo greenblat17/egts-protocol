@@ -1,11 +1,9 @@
 package org.example;
 
-import org.example.model.BinaryData;
 import org.example.model.Package;
 
 import java.io.*;
 import java.net.ServerSocket;
-import java.nio.charset.Charset;
 import java.util.Arrays;
 import java.util.HexFormat;
 
@@ -28,27 +26,16 @@ public class EgtsServerApplication {
                 while ((line = bufferedReader.readLine()) != null) {
                     System.out.println("Server received: " + line);
                     var bytes = HexFormat.of().parseHex(line);
-                    var aPackage = new Package();
+                    var result = new Package();
 
-                    var state = aPackage.decode(bytes);
+                    var state = result.decode(bytes);
                     System.out.println("State: " + state);
-                    System.out.println("Package: " + aPackage);
+                    System.out.println("Package: " + result);
 
-                    out.println("Message receive!");
+                    out.println("Answer from server: " + Arrays.toString(state.encode()));
                 }
             }
         }
-    }
-
-    public static byte[] convertToBytes(String line) {
-        var nums = line.substring(1, line.length() - 1).split(", ");
-        byte[] res = new byte[nums.length];
-        for (int i = 0; i < nums.length; i++) {
-            var shortNumber = Short.parseShort(nums[i]);
-            var hexString = Integer.toHexString(shortNumber);
-
-        }
-        return res;
     }
 
 }
