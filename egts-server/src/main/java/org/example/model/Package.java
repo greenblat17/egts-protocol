@@ -79,8 +79,8 @@ public class Package implements BinaryData {
             var dataFrameBytes = in.readNBytes(frameDataLength);
             BinaryData servicesFrameData;
             switch (packetType) {
+                case 0 -> servicesFrameData = new PtResponse();
                 case 1 -> servicesFrameData = new ServiceDataSet();
-                case 2 -> servicesFrameData = new PtResponse();
                 default -> throw new RuntimeException("Unknown package type: " + packetType);
             }
             servicesFrameData.decode(dataFrameBytes);
